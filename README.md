@@ -39,3 +39,68 @@ Follow these steps to set up and run the project locally 👇
 git clone https://github.com/yourusername/product-management.git
 cd product-management
 ```
+
+### 2️⃣ Install Backend Dependencies
+
+```bash
+composer install
+```
+
+### 3️⃣ Install Frontend Dependencies
+
+```bash
+npm install
+```
+
+### 4️⃣ Configure Environment
+Copy the example environment file and configure your database:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` to match your local setup:
+
+```bash
+DB_CONNECTION=mysql
+DB_DATABASE=product_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5️⃣ Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+### 5️⃣ Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+### 6️⃣ Run Migrations and Seeders
+
+```bash
+php artisan migrate --seed
+```
+This will create all necessary tables and seed sample data.
+
+### 7️⃣ Run the Development Servers
+Start Laravel’s backend and Vite’s frontend in two separate terminals:
+
+```bash
+php artisan serve
+```
+```bash
+npm run dev
+```
+
+### 5️⃣ Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+Then open (http://localhost:8000) 🎉
