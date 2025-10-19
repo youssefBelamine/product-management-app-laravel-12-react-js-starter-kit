@@ -29,21 +29,8 @@ export default function Create() {
 
   function submitHandler(e: FormEvent) {
     e.preventDefault()
-    
-    // ✅ Client-side validation
-    if (!data.name.trim() || !data.price || !data.description.trim()) {
-        setAlert({ type: 'error', message: 'All fields are required.' })
-        return
-    }
-    
-    if (Number(data.price) <= 0) {
-        setAlert({ type: 'error', message: 'Price must be greater than 0.' })
-        return
-    }
-    
-    // ✅ Simulate server post (you can replace with `post(route('products.store'))`)
-    console.log('Submitted:', data)
     post("/products/store");
+    
 
     // ✅ Show success message
     setAlert({ type: 'success', message: 'Product created successfully!' })
@@ -60,21 +47,23 @@ export default function Create() {
         <Button className='font-bold text-2xl w-15 mx-4 my-2'>{'<-'}</Button>
       </Link>
 
-      <h1 className='text-3xl m-5 font-bold'>Let's create a new product</h1>
+      <h1 className='text-2xl m-5 font-bold'>Let's create a new product</h1>
 
-      {alert && (
-        <div className="w-1/2 m-auto mb-4">
-          <Alert className={alert.type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}>
-            {alert.type === 'error' ? (
-              <TriangleAlert color='#ffffff' className="h-4 w-4" />
-            ) : (
-              <CheckCircle color='green' className="h-4 w-4 text-white" />
-            )}
-            <AlertTitle>{alert.type === 'error' ? 'Error' : 'Success'}</AlertTitle>
-            <AlertDescription className='text-white'>{alert.message}</AlertDescription>
-          </Alert>
-        </div>
-      )}
+
+{errors && Object.keys(errors).length > 0 && (
+  <div className="w-1/2 m-auto mb-4">
+    <Alert className="bg-red-500 text-white">
+      <TriangleAlert color='#ffffff' className="h-4 w-4" />
+      <AlertTitle className='font-bold'>Error</AlertTitle>
+      <AlertDescription className='text-white'>
+        {Object.values(errors).map((error, index) => (
+          <div key={index}>{error}</div>
+        ))}
+      </AlertDescription>
+    </Alert>
+  </div>
+)}
+
 
       <form onSubmit={submitHandler}>
         <div className='m-auto w-1/2 border border-gray-300 p-8 rounded-2xl shadow-sm'>

@@ -13,8 +13,9 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return Inertia::render("Products/Index");
+    {   
+        $products = Product::all();
+        return Inertia::render("Products/Index", compact("products"));
     }
 
     /**
@@ -30,9 +31,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = $request->all();
-        Product::create($product);
-        return redirect()->route("products.index");
+        $request->validate([
+            'name' => 'required|string|max:255',           // Name is required, must be a string, max 255 chars
+            'price' => 'required|numeric|min:0',           // Price is required, must be numeric, minimum 0
+            'description' => 'nullable|string',            // Description is optional, must be string if provided
+        ]);
+
+        Product::create($request->all());
+        return redirect()->route("products.index")->with("message", "Product created successfully.");
     }
 
     /**
