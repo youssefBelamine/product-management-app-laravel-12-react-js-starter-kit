@@ -106,7 +106,7 @@ php artisan key:generate
 Then open (http://localhost:8000) 🎉
 
 ### 🧱 Project Structure
-<code>
+`
 product-management/
 │
 ├── app/
@@ -128,5 +128,4 @@ product-management/
 ├── routes/
 │   └── web.php
 └── README.md
-
-</code>
+`
