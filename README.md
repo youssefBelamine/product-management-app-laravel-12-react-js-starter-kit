@@ -104,3 +104,29 @@ php artisan key:generate
 ```
 
 Then open (http://localhost:8000) 🎉
+
+### 🧱 Project Structure
+<code>
+product-management/
+│
+├── app/
+│   └── Http/
+│       ├── Controllers/
+│       └── Requests/
+│
+├── resources/
+│   ├── js/
+│   │   ├── Pages/
+│   │   ├── Components/
+│   │   └── Layouts/
+│   └── views/
+│
+├── public/
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── routes/
+│   └── web.php
+└── README.md
+
+</code>
