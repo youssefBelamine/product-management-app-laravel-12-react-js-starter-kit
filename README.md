@@ -106,7 +106,7 @@ php artisan key:generate
 Then open (http://localhost:8000) 🎉
 
 ### 🧱 Project Structure
-`
+<code>
 product-management/
 │
 ├── app/
@@ -128,4 +128,14 @@ product-management/
 ├── routes/
 │   └── web.php
 └── README.md
-`
+</code>
+
+### 🧭 API Endpoints
+
+| Method | Endpoint         | Description          |
+| ------ | ---------------- | -------------------- |
+| GET    | `/products`      | Display all products |
+| POST   | `/products`      | Create new product   |
+| PUT    | `/products/{id}` | Update product       |
+| DELETE | `/products/{id}` | Delete product       |
+
