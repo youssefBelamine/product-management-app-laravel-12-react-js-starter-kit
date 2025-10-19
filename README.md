@@ -132,10 +132,14 @@ product-management/
 
 ### 🧭 API Endpoints
 
-| Method | Endpoint         | Description          |
-| ------ | ---------------- | -------------------- |
-| GET    | `/products`      | Display all products |
-| POST   | `/products`      | Create new product   |
-| PUT    | `/products/{id}` | Update product       |
-| DELETE | `/products/{id}` | Delete product       |
+## 🧭 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| GET | `/products` | Display a list of all products |
+| GET | `/products/create` | Show the form to create a new product |
+| POST | `/products` | Store a newly created product |
+| GET | `/products/{product}/edit` | Show the form to edit an existing product |
+| PUT | `/products/{product}` | Update an existing product |
+| DELETE | `/products/{product}` | Delete an existing product |
 
