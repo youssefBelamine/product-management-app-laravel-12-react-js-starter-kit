@@ -13,7 +13,7 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $products = Product::all();
         return Inertia::render("Products/Index", compact("products"));
     }
@@ -44,17 +44,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
-    {
-        //
-    }
+    public function show(Product $product) {}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render("Products/Edit", compact("product"));
     }
 
     /**
@@ -62,14 +59,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',           // Name is required, must be a string, max 255 chars
+            'price' => 'required|numeric|min:0',           // Price is required, must be numeric, minimum 0
+            'description' => 'nullable|string',            // Description is optional, must be string if provided
+        ]);
+
+        $product->update($validatedData);
+        return redirect()->route("products.index")->with("message", "Product information updated successfully.");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        // dd($id);
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->back()->with("message", "Product deleted successfully.");
     }
 }
