@@ -105,6 +105,7 @@ const handleDelete = (product: Product) => {
             <CirclePlus /> Create New Product
           </Button>
         </Link>
+        
         {/* <h1> {showAlert ? "you can show alert": "you can't"} </h1>
         <h1> {alertMessage ? "there is alert": "no alert to show"} </h1> */}
 

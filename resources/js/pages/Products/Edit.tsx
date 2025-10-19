@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout'
 import { type BreadcrumbItem } from '@/types'
 import { Head, Link, useForm } from '@inertiajs/react'
 import { Textarea } from "@/components/ui/textarea"
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { CheckCircle, TriangleAlert } from 'lucide-react'
 
 interface Product {
@@ -50,6 +50,10 @@ export default function Edit({ product }: Props) {
       }
     })
   }
+
+  useEffect(() => {
+    console.log(product)
+  }, [])
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
