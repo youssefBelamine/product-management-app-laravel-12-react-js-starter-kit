@@ -121,7 +121,7 @@ Then open (http://localhost:8000) 🎉
 
 <img src="public/screenshots/product_deleting.png" />
 
--
+---
 
 ## 🧱 Project Structure
 <code>
