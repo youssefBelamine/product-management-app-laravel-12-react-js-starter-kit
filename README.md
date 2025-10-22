@@ -3,6 +3,8 @@
 A modern and elegant **Product Management System** built with **Laravel 12**, **Inertia.js**, **React**, **TypeScript**, and **Shadcn UI**.  
 This app allows you to manage your products efficiently — add, edit, delete, upload images, and control stock — all in one clean and interactive dashboard.
 
+- The products informations are scraped from amazon with the help of Apify platform and his amazon product scraped Actor
+
 ---
 
 ## 🚀 Tech Stack
@@ -19,7 +21,7 @@ This app allows you to manage your products efficiently — add, edit, delete, u
 
 ## ✨ Features
 
-- 🧩 Add, edit, and delete products  
+- 🧩 List paginated products with the options of Add, edit, and delete  
 - 🖼️ Upload and preview product images  
 - 📦 Manage stock and price  
 - 💬 Display validation and success messages  
@@ -96,12 +98,11 @@ php artisan serve
 ```bash
 npm run dev
 ```
+## 🖼️ Screenshots
 
-### 5️⃣ Generate App Key
+### Paginated Products list
 
-```bash
-php artisan key:generate
-```
+<img src="screenshots/Paginated_products_list.png" />
 
 Then open (http://localhost:8000) 🎉
 
