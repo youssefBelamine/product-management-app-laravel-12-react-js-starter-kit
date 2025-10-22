@@ -7,7 +7,7 @@ import { type BreadcrumbItem } from '@/types'
 import { Head, Link, useForm } from '@inertiajs/react'
 import { Textarea } from "@/components/ui/textarea"
 import { FormEvent, useState, useCallback } from 'react'
-import { CheckCircle, TriangleAlert, UploadCloud } from 'lucide-react'
+import { TriangleAlert, UploadCloud } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import { route } from 'ziggy-js'
 
@@ -28,8 +28,6 @@ export default function Create() {
     description: '',
     image: null as File | null,
   })
-
-  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   // 🖼️ Dropzone setup
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -54,7 +52,7 @@ export default function Create() {
         reset()
       },
       onError: () => {
-        setAlert({ type: 'error', message: 'Something went wrong!' })
+        console.log({ type: 'error', message: 'Something went wrong!' })
       },
     })
   }

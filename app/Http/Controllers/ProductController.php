@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::orderBy('id', 'desc')->paginate(10);
         return Inertia::render("Products/Index", compact("products"));
     }
 
@@ -78,12 +78,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
 {
-    // dd($request->all());
-    // dd($product);
+    // dd($request->all(), $product);
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
-        'stock' => 'integer|min:0',
+        'stock' => 'required|integer|min:0',
         'description' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
     ]);

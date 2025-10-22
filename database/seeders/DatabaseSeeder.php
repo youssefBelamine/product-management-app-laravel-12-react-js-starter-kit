@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::firstOrCreate(
-            ['email' => 'youssefbelamine23@gmail.com'],
-            [
-                'name' => 'youssef',
-                'password' => Hash::make('ysfbl23dev@'),
-                'email_verified_at' => now(),
-            ]
-        );
+        // User::firstOrCreate(
+        //     ['email' => 'youssefbelamine23@gmail.com'],
+        //     [
+        //         'name' => 'youssef',
+        //         'password' => Hash::make('ysfbl23dev@'),
+        //         'email_verified_at' => now(),
+        //     ]
+        // );
         $this->call([
             ProductSeeder::class,
         ]);

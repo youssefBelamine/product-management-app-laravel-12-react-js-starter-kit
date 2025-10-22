@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -26,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { route } from 'ziggy-js';
+import ProductsPagination from '@/components/ProductsPagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -35,28 +37,28 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface Product {
-    id: number,
-    name: string,
-    price: number
-    description: string
+  id: number,
+  name: string,
+  price: number
+  description: string
 }
 
 function DeleteProductButton({ onConfirm, name }: { onConfirm: () => void, name: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className='mx-2' variant="destructive"> <Trash2/> </Button>
+        <Button className='mx-2' variant="destructive"> <Trash2 /> </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure you want to delete <br/>{name} ?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure you want to delete <br />{name} ?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the product from your system.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}  className='bg-red-600'> <Trash2/> </AlertDialogAction>
+          <AlertDialogAction onClick={onConfirm} className='bg-red-600'> <Trash2 /> </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -66,22 +68,22 @@ function DeleteProductButton({ onConfirm, name }: { onConfirm: () => void, name:
 
 
 export default function Index() {
-  const { flash }: any = usePage().props; 
-  const { products }: any = usePage().props; 
-const [alertMessage, setAlertMessage] = useState(flash?.message || null);
+  const { flash }: any = usePage().props;
+  const { products }: any = usePage().props;
+  const [alertMessage, setAlertMessage] = useState(flash?.message || null);
   const [showAlert, setShowAlert] = useState(!!flash?.message);
 
-const handleDelete = (product: Product) => {
-  setShowAlert(false); // reset before new delete
-  setAlertMessage(null);
-  router.delete(`/products/${product.id}`, {
-    preserveScroll: true,
-    onSuccess: () => {
-      console.log(`${product.name} deleted successfully`);
-    },
-  });
-};
-
+  const handleDelete = (product: Product) => {
+    setShowAlert(false); // reset before new delete
+    setAlertMessage(null);
+    router.delete(`/products/${product.id}`, {
+      preserveScroll: true,
+      onSuccess: () => {
+        console.log(`${product.name} deleted successfully`);
+      },
+    });
+  };
+// console.log(products.data.map((p: any) => p.price))
   // 🕒 Auto hide after 4 seconds
   useEffect(() => {
     if (flash?.message) {
@@ -105,7 +107,7 @@ const handleDelete = (product: Product) => {
             <CirclePlus /> Create New Product
           </Button>
         </Link>
-        
+
         {/* <h1> {showAlert ? "you can show alert": "you can't"} </h1>
         <h1> {alertMessage ? "there is alert": "no alert to show"} </h1> */}
 
@@ -132,46 +134,63 @@ const handleDelete = (product: Product) => {
         )}
       </div>
       <Table className='w-4/5 m-auto'>
-  <TableCaption>A list of Products.</TableCaption>
-  <TableHeader>
-    <TableRow>
-      <TableHead className="w-[100px]">ID</TableHead>
-      <TableHead>Product name</TableHead>
-      <TableHead>Product price</TableHead>
-      <TableHead className="text-center">Product description</TableHead>
-      <TableHead className="text-center">Action</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-                    {products && products.length > 0 ? (
-                        products.map((p: any) => (
-                            <TableRow key={p.id}>
-                                <TableCell className="font-medium">{p.id}</TableCell>
-                                <TableCell className="font-medium">{p.name}</TableCell>
-                                <TableCell>{p.price}</TableCell>
-                                <TableCell>
-                                    {p.description && p.description.length > 50
-                                        ? p.description.substring(0, 50) + '  ...'
-                                        : p.description}
-                                </TableCell>
+        <TableCaption>A list of Products.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead className="text-center">Product Image</TableHead>
+            <TableHead className="text-center">Product name</TableHead>
+            <TableHead className="text-center">Product price</TableHead>
+            <TableHead className="text-center">Product Stock</TableHead>
+            <TableHead className="text-center">Product description</TableHead>
+            <TableHead className="text-center">Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {products.data && products.data.length > 0 ? (
+            products.data.map((p: any) => (
+              <TableRow key={p.id}>
+                <TableCell className="font-medium">{p.id}</TableCell>
+                <TableCell className="font-medium"> <img src={p.image_url} alt={p.name} className='size-20' /> </TableCell>
+                <TableCell>
+                  {p.name && p.name.length > 40
+                    ? p.name.substring(0, 40) + '  ...'
+                    : p.name}
+                </TableCell>
+                {/* <TableCell className="font-medium">{p.name}</TableCell> */}
+                <TableCell className="text-center font-medium text-green-600">
+                  <span className=' bg-green-200 px-1 py-0.5 rounded-full'> {p.price} $</span>
+                </TableCell>
 
-                                {/* <TableCell className="text-center">${p.price}</TableCell> */}
-                                <TableCell className="text-center">
-                                     <Link href={route("products.edit", p.id)}><Button className='mx-2'><SquarePen /></Button></Link>
-                                     
-                                     <DeleteProductButton onConfirm={() => handleDelete(p)} name={p.name} /> 
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={4} className="text-center text-gray-500">
-                                No products found.
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-</Table>
+                <TableCell className='text-center'>{p.stock}</TableCell>
+                <TableCell>
+                  {p.description && p.description.length > 40
+                    ? p.description.substring(0, 40) + '  ...'
+                    : p.description}
+                </TableCell>
+
+                {/* <TableCell className="text-center">${p.price}</TableCell> */}
+                <TableCell className="text-center">
+                  <Link href={route("products.edit", p.id)}><Button className='mx-2'><SquarePen /></Button></Link>
+
+                  <DeleteProductButton onConfirm={() => handleDelete(p)} name={p.name} />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center text-gray-500">
+                No products found.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+              <TableCell colSpan={7}><ProductsPagination links={products.links} /></TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </AppLayout>
   );
 }

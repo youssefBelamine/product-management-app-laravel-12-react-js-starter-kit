@@ -6,14 +6,18 @@ import AppLayout from '@/layouts/app-layout'
 import { type BreadcrumbItem } from '@/types'
 import { Head, Link, useForm } from '@inertiajs/react'
 import { Textarea } from "@/components/ui/textarea"
-import { FormEvent, useEffect, useState } from 'react'
-import { CheckCircle, TriangleAlert } from 'lucide-react'
+import { FormEvent, useCallback, useEffect, useState } from 'react'
+import { CheckCircle, TriangleAlert, UploadCloud } from 'lucide-react'
+import { useDropzone } from 'react-dropzone'
+import { route } from 'ziggy-js'
 
 interface Product {
   id: number
   name: string
   price: number
+  stock: number
   description?: string
+  image_url?: string
 }
 
 interface Props {
@@ -30,24 +34,35 @@ const style = {
 }
 
 export default function Edit({ product }: Props) {
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     name: product.name || '',
     price: product.price || '',
+    stock: product.stock || '',
     description: product.description || '',
+    image: null as File | null,
+    _method: "PUT"
   })
 
-  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  // Dropzone for image
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setData('image', acceptedFiles[0])
+    }
+  }, [setData])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { 'image/*': [] },
+    multiple: false,
+  })
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault()
 
-    put(`/products/${product.id}`, {
-      onSuccess: () => {
-        setAlert({ type: 'success', message: 'Product updated successfully!' })
-      },
-      onError: () => {
-        setAlert({ type: 'error', message: 'Failed to update the product.' })
-      }
+    console.log(data);
+
+    post(route("products.update", product.id), {
+      forceFormData: true, // important for file upload
     })
   }
 
@@ -65,24 +80,6 @@ export default function Edit({ product }: Props) {
 
       <h1 className='text-2xl m-5 font-bold'>Edit Product</h1>
 
-      {alert && (
-        <div className="w-1/2 m-auto mb-4">
-          <Alert className={alert.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}>
-            {alert.type === 'success' ? (
-              <CheckCircle color="#ffffff" className="h-4 w-4" />
-            ) : (
-              <TriangleAlert color="#ffffff" className="h-4 w-4" />
-            )}
-            <AlertTitle className='font-bold'>
-              {alert.type === 'success' ? 'Success' : 'Error'}
-            </AlertTitle>
-            <AlertDescription className='text-white'>
-              {alert.message}
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
-
       {errors && Object.keys(errors).length > 0 && (
         <div className="w-1/2 m-auto mb-4">
           <Alert className="bg-red-500 text-white">
@@ -97,12 +94,50 @@ export default function Edit({ product }: Props) {
         </div>
       )}
 
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} encType="multipart/form-data" >
         <div className='m-auto w-1/2 border border-gray-300 p-8 rounded-2xl shadow-sm'>
+         {/* Product Image Dropzone */}
+          <div className='mt-4'>
+            <Label className={style.labelStyle}>Product Image</Label>
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition 
+              ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-400 hover:border-blue-400'}`}
+            >
+              <input {...getInputProps()} />
+              {data.image ? (
+                <div className='flex flex-col items-center'>
+                  <img
+                    src={URL.createObjectURL(data.image)}
+                    alt="Preview"
+                    className='w-32 h-32 object-cover rounded-lg mb-2'
+                  />
+                  <span className='text-gray-700 font-medium'>{data.image.name}</span>
+                </div>
+              ) : product.image_url ? (
+                <div className='flex flex-col items-center'>
+                  {/* <span className='bg-red-700'>x</span> */}
+                  <img
+                    src={product.image_url}
+                    alt="Current"
+                    className='w-32 h-32 object-cover rounded-lg mb-2'
+                  />
+                  <span className='text-gray-700 font-medium'>Current Image</span>
+                </div>
+              ) : (
+                <div className='flex flex-col items-center'>
+                  <UploadCloud className='w-10 h-10 text-gray-500 mb-2' />
+                  <p className='text-gray-600'>Drag & drop your image here, or click to select one</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Product Name */}
           <div>
-            <Label htmlFor='productName' className={style.labelStyle}>Product Name</Label>
+            <Label htmlFor='name' className={style.labelStyle}>Product Name</Label>
             <Input
-              name='productName'
+              name='name'
               className={style.inputStyle}
               placeholder='Product name'
               value={data.name}
@@ -123,6 +158,19 @@ export default function Edit({ product }: Props) {
               onChange={e => setData('price', e.target.value)}
             />
           </div>
+                    {/* Product Stock */}
+                    <div>
+                      <Label htmlFor='stock' className={style.labelStyle}>Product Stock</Label>
+                      <Input
+                        type='number'
+                        name='stock'
+                        min="0"
+                        className={style.inputStyle}
+                        placeholder='Product stock'
+                        value={data.stock}
+                        onChange={e => setData('stock', e.target.value)}
+                      />
+                    </div>
 
           <div>
             <Label htmlFor='productDescription' className={style.labelStyle}>Product Description</Label>
@@ -136,7 +184,7 @@ export default function Edit({ product }: Props) {
         </div>
 
         <div className='text-center mt-6'>
-          <Button type='submit' disabled={processing}>Update</Button>
+          <Button type='submit' disabled={processing} className={processing ? "bg-gray-400" : "bg-black"}>Update</Button>
         </div>
       </form>
     </AppLayout>
