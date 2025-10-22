@@ -102,7 +102,7 @@ npm run dev
 
 ### Paginated Products list
 
-<img src="screenshots/Paginated_products_list.png" />
+<img src="public/screenshots/Paginated_products_list.png" />
 
 Then open (http://localhost:8000) 🎉
 
