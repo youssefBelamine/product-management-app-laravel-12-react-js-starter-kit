@@ -109,10 +109,19 @@ Then open (http://localhost:8000) 🎉
 
 <img src="public/screenshots/Paginated_products_list.png" />
 
-### Paginated Products list
+### Form of creating a new product
 
-<img src="public/screenshots/Paginated_products_list.png" />
+<img src="public/screenshots/create product form.png" />
 
+### Form of editing a product
+
+<img src="public/screenshots/edit_product_form.png" />
+
+### Confirmation of deleting a product 
+
+<img src="public/screenshots/product_deleting.png" />
+
+-
 
 ## 🧱 Project Structure
 <code>
