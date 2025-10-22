@@ -98,13 +98,21 @@ php artisan serve
 ```bash
 npm run dev
 ```
+
+Then open (http://localhost:8000) 🎉
+
+---
+
 ## 🖼️ Screenshots
 
 ### Paginated Products list
 
 <img src="public/screenshots/Paginated_products_list.png" />
 
-Then open (http://localhost:8000) 🎉
+### Paginated Products list
+
+<img src="public/screenshots/Paginated_products_list.png" />
+
 
 ## 🧱 Project Structure
 <code>
